@@ -25,7 +25,6 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String cedula;
-    private String correo;
     private String telefono;
     private String email;
     private String password;
@@ -33,5 +32,22 @@ public class Usuario {
     private Departamento departamento;
     private Cargo cargo;
     private HorarioSemana horarioSemana;
+
+    //CONSTRUCTOR BUILDER
+    @Builder
+    public Usuario (String cedula,String nombre,String apellido,String telefono,String email, String password  ,Departamento departamento, Cargo cargo,LocalDateTime fechaContratacion) {
+
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.cedula = cedula;
+        this.email = email;
+        this.telefono = telefono;
+        this.password = password;
+        this.fechaContratacion = fechaContratacion;
+        this.departamento = departamento;
+        this.cargo = cargo;
+        this.horarioSemana = horarioSemana;
+
+    }
 
 }
