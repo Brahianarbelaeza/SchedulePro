@@ -17,5 +17,8 @@ public interface UsuarioRepo extends MongoRepository<Usuario, String> {
     @Query("{email: ?0}")
     Optional<Usuario> buscarEmail(String email);
 
+    @Query("{_id: ?0}")
+    Optional<Usuario> buscarPorId(String id);
+
 
 }

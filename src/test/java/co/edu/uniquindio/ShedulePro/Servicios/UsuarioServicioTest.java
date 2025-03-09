@@ -35,7 +35,7 @@ public class UsuarioServicioTest {
                 "Gil",
                 "3145326847",
                 "jhogillds@gmail.com",
-                Departamento.AMAZONAS,
+                Departamento.CAJA,
                 Cargo.EMPLEADO,
                 LocalDateTime.of(2022, 1, 1, 10, 0)
         );
@@ -55,7 +55,7 @@ public class UsuarioServicioTest {
                 "Pérez Modificado",
                 "3121234567",
                 "juan.modificado@example.com",
-                Departamento.ANTIOQUIA,
+                Departamento.ADMINISTRACION_Y_FINANZAS,
                 Cargo.EMPLEADO,
                 LocalDateTime.of(2022, 2, 1, 10, 0)
         );
@@ -68,7 +68,7 @@ public class UsuarioServicioTest {
 
     @Test
     void eliminarUsuarioTest() {
-        String id = "67cbc3ecf31a832bd9984d8d";
+        String id = "67cde31da0c37b25cabcce98";
 
         assertDoesNotThrow(() -> {
             String respuesta = usuarioServicio.eliminarUsuario(id);

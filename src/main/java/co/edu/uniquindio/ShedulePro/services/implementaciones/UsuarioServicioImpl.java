@@ -10,6 +10,7 @@ import co.edu.uniquindio.ShedulePro.dto.usuario.InformacionUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.ItemUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.model.documents.Usuario;
 import co.edu.uniquindio.ShedulePro.model.enums.Cargo;
+import co.edu.uniquindio.ShedulePro.model.enums.Estado;
 import co.edu.uniquindio.ShedulePro.repositories.UsuarioRepo;
 import co.edu.uniquindio.ShedulePro.services.interfaces.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 dto.cargo(),
                 dto.fechaContratacion()
         );
+        usuario.setEstado(Estado.ACTIVO);
         String contrasena = obtenerContrasena();
         usuario.setPassword(encriptarPassword(contrasena));
         emailServicio.enviarCorreo(new EmailDTO(
@@ -113,11 +115,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public String eliminarUsuario(String id) throws Exception {
-        if (!usuarioRepo.existsById(id)) {
-            throw new Exception("El usuario no existe.");
-        }
-        usuarioRepo.deleteById(id);
-        return "Usuario eliminado con éxito";
+        Usuario usuario = obtenerPorId(id);
+        usuario.setEstado(Estado.INACTIVO);
+        usuarioRepo.save(usuario);
+        return "usuario eliminado correctamente.";
     }
 
     @Override
@@ -142,7 +143,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public List<ItemUsuarioDTO> listarUsuarios() throws Exception {
         return usuarioRepo.findAll().stream()
-                .filter(usuario -> usuario.getCargo().equals(Cargo.EMPLEADO))
+                .filter(usuario -> usuario.getCargo().equals(Cargo.EMPLEADO )&& usuario.getEstado() == Estado.ACTIVO)
                 .map(usuario -> new ItemUsuarioDTO(
                         usuario.getId(),
                         usuario.getNombre(),
@@ -201,6 +202,14 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 "nombre", usuario.getNombre(),
                 "id", usuario.getId()
         );
+    }
+
+    private  Usuario obtenerPorId(String id) throws Exception {
+        Optional<Usuario> usuarioOptional = usuarioRepo.buscarPorId(id);
+        if (usuarioOptional.isEmpty()){
+            throw new Exception("El usuario no existe.");
+        }
+        return usuarioOptional.get();
     }
 
 
