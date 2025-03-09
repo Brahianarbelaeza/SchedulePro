@@ -1,5 +1,8 @@
-package co.edu.uniquindio.ShedulePro;
+package co.edu.uniquindio.ShedulePro.Servicios;
 
+import co.edu.uniquindio.ShedulePro.Config.JWTUtils;
+import co.edu.uniquindio.ShedulePro.dto.LoginDTO;
+import co.edu.uniquindio.ShedulePro.dto.TokenDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.CrearUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.EditarUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.InformacionUsuarioDTO;
@@ -22,7 +25,8 @@ public class UsuarioServicioTest {
 
     @Autowired
     private UsuarioServicio usuarioServicio;
-
+    @Autowired
+    private JWTUtils jwtUtils;
     @Test
     void crearUsuarioTest() {
         CrearUsuarioDTO crearUsuarioDTO = new CrearUsuarioDTO(
@@ -30,7 +34,7 @@ public class UsuarioServicioTest {
                 "Juan",
                 "Pérez",
                 "3111234567",
-                "jhogillds@gmail.com",
+                "barbelaezaguirre@gmail.com",
                 Departamento.AMAZONAS,
                 Cargo.EMPLEADO,
                 LocalDateTime.of(2022, 1, 1, 10, 0)
@@ -88,5 +92,24 @@ public class UsuarioServicioTest {
             List<ItemUsuarioDTO> usuarios = usuarioServicio.listarUsuarios();
             assertNotNull(usuarios, "La lista de usuarios no debería ser nula.");
         });
+    }
+    @Test
+    void iniciarSesionTest() {
+
+        LoginDTO loginDTO = new LoginDTO(
+                "barbelaezaguirre@gmail.com",
+                "pxWsvy"
+        );
+
+        // Se espera que no se lance ninguna excepción
+        assertDoesNotThrow(() -> {
+            // Se inicia sesion y retorna el token JWS
+            TokenDTO tokenDTO = usuarioServicio.iniciarSesion(loginDTO);
+            System.out.println(tokenDTO.token());
+            System.out.println(jwtUtils.parseJwt(tokenDTO.token()).getPayload().toString());
+            // Se espera que el valor del token no sea nulo
+            assertNotNull(tokenDTO);
+        });
+
     }
 }

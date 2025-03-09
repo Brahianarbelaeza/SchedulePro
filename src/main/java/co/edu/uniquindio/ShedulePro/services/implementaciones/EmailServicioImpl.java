@@ -22,13 +22,12 @@ public class EmailServicioImpl implements EmailServicio {
     @Override
     @Async
     public void enviarCorreo(EmailDTO emailDTO) throws Exception {
-        System.out.println(username+ port + password + "El error esta aqui");
 
         Email email = EmailBuilder.startingBlank()
                 .from(username)
                 .to(emailDTO.destinatario())
                 .withSubject(emailDTO.asunto())
-                .withPlainText(emailDTO.cuerpo())
+                .withHTMLText(emailDTO.cuerpo())
                 .buildEmail();
 
 

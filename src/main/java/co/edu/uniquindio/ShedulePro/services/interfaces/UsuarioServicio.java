@@ -1,5 +1,7 @@
 package co.edu.uniquindio.ShedulePro.services.interfaces;
 
+import co.edu.uniquindio.ShedulePro.dto.LoginDTO;
+import co.edu.uniquindio.ShedulePro.dto.TokenDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.CrearUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.EditarUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.InformacionUsuarioDTO;
@@ -18,4 +20,5 @@ public interface UsuarioServicio {
     InformacionUsuarioDTO obtenerUsuario(String id) throws Exception;
 
     List <ItemUsuarioDTO> listarUsuarios() throws Exception;
+    TokenDTO iniciarSesion(LoginDTO loginDTO) throws Exception;
 }

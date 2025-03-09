@@ -1,5 +1,8 @@
 package co.edu.uniquindio.ShedulePro.services.implementaciones;
 
+import co.edu.uniquindio.ShedulePro.Config.JWTUtils;
+import co.edu.uniquindio.ShedulePro.dto.LoginDTO;
+import co.edu.uniquindio.ShedulePro.dto.TokenDTO;
 import co.edu.uniquindio.ShedulePro.dto.email.EmailDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.CrearUsuarioDTO;
 import co.edu.uniquindio.ShedulePro.dto.usuario.EditarUsuarioDTO;
@@ -9,11 +12,13 @@ import co.edu.uniquindio.ShedulePro.model.documents.Usuario;
 import co.edu.uniquindio.ShedulePro.repositories.UsuarioRepo;
 import co.edu.uniquindio.ShedulePro.services.interfaces.UsuarioServicio;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -24,6 +29,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     private final UsuarioRepo usuarioRepo;
     private final EmailServicioImpl emailServicio;
+    private final JWTUtils jwtUtils;
 
     @Override
     public String crearUsuario(CrearUsuarioDTO dto) throws Exception {
@@ -43,13 +49,35 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 dto.cargo(),
                 dto.fechaContratacion()
         );
-        String contraseña = obtenerContrasena();
-        usuario.setPassword(contraseña);
-        emailServicio.enviarCorreo( new EmailDTO("Credenciales para inicio de sesión", "estas credenciales las " +
-                "usarás de ahora en adelante para iniciar sesión para consultar tus horarios, Bienvenid@: " +
-                "\n"+
-                "Usuario :"  + usuario.getEmail()+ "\n"+"Contraseña: "+ contraseña ,usuario.getEmail() ));
-
+        String contrasena = obtenerContrasena();
+        usuario.setPassword(encriptarPassword(contrasena));
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Schedule Pro - Registro Exitoso",
+                "<html>" +
+                        "<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>" +
+                        "<div style='max-width: 500px; margin: auto; background: #ffffff; padding: 20px; " +
+                        "border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);'>" +
+                        "<h2 style='color: #333; text-align: center;'>Bienvenido a Schedule Pro</h2>" +
+                        "<p style='color: #555; font-size: 16px; line-height: 1.5;'>" +
+                        "¡Hola! Se informa que usted ha sido registrado en la aplicación <strong>Schedule Pro</strong>. " +
+                        "A partir de ahora, podrá iniciar sesión y consultar sus horarios con las siguientes credenciales:" +
+                        "</p>" +
+                        "<div style='background: #f8f8f8; padding: 10px; border-radius: 5px; margin: 20px 0;'>" +
+                        "<p style='margin: 5px 0;'><strong>Usuario:</strong> <span style='color: #007bff;'>" + usuario.getEmail() + "</span></p>" +
+                        "<p style='margin: 5px 0;'><strong>Contraseña:</strong> <span style='color: #28a745;'>" + contrasena + "</span></p>" +
+                        "</div>" +
+                        "<p style='text-align: center; margin-top: 20px;'>" +
+                        "<a href='https://schedulepro.com/login' style='display: inline-block; padding: 10px 20px; " +
+                        "color: white; background: #007bff; text-decoration: none; border-radius: 5px;'>Iniciar Sesión</a>" +
+                        "</p>" +
+                        "<p style='color: #777; font-size: 14px; text-align: center; margin-top: 20px;'>" +
+                        "Si no solicitó este registro, ignore este mensaje." +
+                        "</p>" +
+                        "</div>" +
+                        "</body>" +
+                        "</html>",
+                usuario.getEmail()
+        ));
         usuarioRepo.save(usuario);
         return usuario.getId();
     }
@@ -133,4 +161,43 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }
         return codigo.toString();
     }
+    private String encriptarPassword(String password){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode( password );
+    }
+    @Override
+    public TokenDTO iniciarSesion(LoginDTO loginDTO) throws Exception {
+
+
+        Usuario usuario = obtenerPorEmail(loginDTO.email());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+        if( !passwordEncoder.matches(loginDTO.password(), usuario.getPassword()) ) {
+            throw new Exception("La contraseña es incorrecta");
+        }
+
+
+        Map<String, Object> map = construirClaims(usuario);
+        return new TokenDTO( jwtUtils.generarToken(usuario.getEmail(), map) );
+    }
+    private Usuario obtenerPorEmail(String correo) throws Exception {
+
+        Optional<Usuario> usuarioOptional = usuarioRepo.buscarEmail(correo);
+
+        if (usuarioOptional.isEmpty()){
+            throw new Exception("El correo dado no está registrado");
+        }
+
+        return usuarioOptional.get();
+    }
+    private Map<String, Object> construirClaims(Usuario usuario) {
+        return Map.of(
+                "rol", usuario.getCargo(),
+                "nombre", usuario.getNombre(),
+                "id", usuario.getId()
+        );
+    }
+
+
 }
