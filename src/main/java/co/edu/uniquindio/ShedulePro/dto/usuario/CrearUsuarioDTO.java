@@ -2,7 +2,6 @@ package co.edu.uniquindio.ShedulePro.dto.usuario;
 
 import co.edu.uniquindio.ShedulePro.model.enums.Cargo;
 import co.edu.uniquindio.ShedulePro.model.enums.Departamento;
-import co.edu.uniquindio.ShedulePro.model.enums.Estado;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 

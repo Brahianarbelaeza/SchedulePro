@@ -6,9 +6,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Document("usuario")
 @Getter
@@ -18,7 +16,6 @@ import java.util.Date;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 public class Usuario {
-
     @Id
     @EqualsAndHashCode.Include
     private String id;

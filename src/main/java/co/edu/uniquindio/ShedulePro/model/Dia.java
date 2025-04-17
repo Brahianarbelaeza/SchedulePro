@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public class Dia {
-    private String nombre;
+    private LocalDateTime fecha;
     private LocalDateTime horaEntrada;
     private LocalDateTime horaSalida;
     private String sede;
