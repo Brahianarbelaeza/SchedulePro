@@ -141,13 +141,14 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public List<ItemUsuarioDTO> listarUsuarios() throws Exception {
+    public List<ItemUsuarioDTO> listarUsuarios() {
         return usuarioRepo.findAll().stream()
                 .filter(usuario -> usuario.getCargo().equals(Cargo.EMPLEADO )&& usuario.getEstado() == Estado.ACTIVO)
                 .map(usuario -> new ItemUsuarioDTO(
                         usuario.getId(),
                         usuario.getNombre(),
                         usuario.getApellido(),
+                        usuario.getTelefono(),
                         usuario.getEmail(),
                         usuario.getDepartamento(),
                         usuario.getCargo()))

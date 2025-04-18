@@ -20,5 +20,6 @@ public interface UsuarioServicio {
     InformacionUsuarioDTO obtenerUsuario(String id) throws Exception;
 
     List <ItemUsuarioDTO> listarUsuarios() throws Exception;
+
     TokenDTO iniciarSesion(LoginDTO loginDTO) throws Exception;
 }
