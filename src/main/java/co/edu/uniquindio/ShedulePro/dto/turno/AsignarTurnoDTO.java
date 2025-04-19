@@ -1,6 +1,6 @@
 package co.edu.uniquindio.ShedulePro.dto.turno;
 
-import co.edu.uniquindio.ShedulePro.model.enums.EstadoTurno;
+
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +14,5 @@ public record AsignarTurnoDTO(
         @NotNull @FutureOrPresent LocalDate fechaTurno,
         @NotNull LocalTime horaEntrada,
         @NotNull LocalTime horaSalida,
-        @NotBlank @Size(max = 100) String sede,
-        @NotNull EstadoTurno estadoTurno
+        @NotBlank @Size(max = 100) String sede
 ) {}

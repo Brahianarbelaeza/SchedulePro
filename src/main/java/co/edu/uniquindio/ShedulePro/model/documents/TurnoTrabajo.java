@@ -12,7 +12,6 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TurnoTrabajo {
@@ -29,7 +28,7 @@ public class TurnoTrabajo {
     private EstadoTurno estado; // ACTIVO, INACTIVO, LIQUIDADO
 
     @Builder
-    public TurnoTrabajo (String empleadoId, LocalDate fechaTurno, LocalTime horaEntrada, LocalTime horaSalida, String sede, EstadoTurno estado) {
+    public TurnoTrabajo (String empleadoId, LocalDate fechaTurno, LocalTime horaEntrada, LocalTime horaSalida, String sede) {
         this.empleadoId = empleadoId;
         this.fechaTurno = fechaTurno;
         this.horaEntrada = horaEntrada;
