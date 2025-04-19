@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-
 @Document("usuario")
 @Getter
 @Setter
@@ -30,7 +29,6 @@ public class Usuario {
     private Departamento departamento;
     private Cargo cargo;
     private Estado estado;
-    private HorarioSemana horarioSemana;
 
     //CONSTRUCTOR BUILDER
     @Builder

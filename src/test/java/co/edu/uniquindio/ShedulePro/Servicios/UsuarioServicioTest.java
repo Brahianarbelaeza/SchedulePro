@@ -68,7 +68,7 @@ public class UsuarioServicioTest {
 
     @Test
     void eliminarUsuarioTest() {
-        String id = "67d8bc0879939437e2915e53";
+        String id = "67d110eeed1bf7649f1d93e6";
 
         assertDoesNotThrow(() -> {
             String respuesta = usuarioServicio.eliminarUsuario(id);
@@ -78,7 +78,7 @@ public class UsuarioServicioTest {
 
     @Test
     void obtenerUsuarioTest() {
-        String id = "605c77c8e0e1f8b3a8b7f123";
+        String id = "67cdf85709ed0637fa78bc4e";
 
         assertDoesNotThrow(() -> {
             InformacionUsuarioDTO usuario = usuarioServicio.obtenerUsuario(id);
