@@ -7,9 +7,11 @@ import co.edu.uniquindio.ShedulePro.repositories.TurnoRepo;
 import co.edu.uniquindio.ShedulePro.repositories.UsuarioRepo;
 import co.edu.uniquindio.ShedulePro.services.interfaces.TurnoTrabajoServicio;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -128,5 +130,21 @@ public class TurnoTrabajoServicioimpl implements TurnoTrabajoServicio {
                     }
                 }).collect(Collectors.toList());
     }
+
+    @Scheduled (cron = "0 0 0 * * *")  // Todos los días a las 12:00 AM
+    public void actualizarEstadosTurnosVencidos() {
+        LocalDate hoy = LocalDate.now();
+
+        List<TurnoTrabajo> turnosVencidos = turnoRepo.findByFechaTurnoBeforeAndEstado(hoy, EstadoTurno.ACTIVO);
+
+        for (TurnoTrabajo turno : turnosVencidos) {
+            turno.setEstado(EstadoTurno.INACTIVO);
+        }
+
+        turnoRepo.saveAll(turnosVencidos);
+
+        System.out.println("Se actualizaron " + turnosVencidos.size() + " turnos vencidos.");
+    }
+
 }
 
