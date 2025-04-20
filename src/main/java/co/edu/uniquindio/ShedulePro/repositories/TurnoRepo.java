@@ -8,4 +8,5 @@ import java.time.LocalDate;
 
 public interface TurnoRepo extends MongoRepository<TurnoTrabajo, String> {
     boolean existsByFechaTurnoAndEmpleadoId(LocalDate fechaTurno, @NotBlank String s);
+
 }

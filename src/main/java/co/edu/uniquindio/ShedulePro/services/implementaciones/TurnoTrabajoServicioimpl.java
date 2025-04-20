@@ -1,9 +1,6 @@
 package co.edu.uniquindio.ShedulePro.services.implementaciones;
 
-import co.edu.uniquindio.ShedulePro.dto.turno.AsignarTurnoDTO;
-import co.edu.uniquindio.ShedulePro.dto.turno.EditarTurnoDTO;
-import co.edu.uniquindio.ShedulePro.dto.turno.EliminarTurnoDTO;
-import co.edu.uniquindio.ShedulePro.dto.turno.ItemTurnoTrabajoDTO;
+import co.edu.uniquindio.ShedulePro.dto.turno.*;
 import co.edu.uniquindio.ShedulePro.model.documents.TurnoTrabajo;
 import co.edu.uniquindio.ShedulePro.model.enums.EstadoTurno;
 import co.edu.uniquindio.ShedulePro.repositories.TurnoRepo;
@@ -11,13 +8,14 @@ import co.edu.uniquindio.ShedulePro.repositories.UsuarioRepo;
 import co.edu.uniquindio.ShedulePro.services.interfaces.TurnoTrabajoServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TurnoTrabajoServicioimpl implements TurnoTrabajoServicio {
-    private final TurnoRepo asignarTurnoDTO;
     private final UsuarioRepo usuarioRepo;
     private final TurnoRepo turnoRepo;
 
@@ -54,18 +52,81 @@ public class TurnoTrabajoServicioimpl implements TurnoTrabajoServicio {
     }
 
     @Override
-    public String editarTurno(String idTurno, EditarTurnoDTO editarTurnoDTO) throws Exception {
-        return "";
+    public String editarTurno(EditarTurnoDTO editarTurnoDTO) throws Exception {
+        if (!turnoRepo.existsById(editarTurnoDTO.idTurno())) {
+            throw new Exception("El turno no existe");
+        }
+        if (editarTurnoDTO.horaEntrada().isAfter(editarTurnoDTO.horaSalida()) || editarTurnoDTO.horaEntrada().equals(editarTurnoDTO.horaSalida())) {
+            throw new IllegalArgumentException("La hora de entrada debe ser antes de la hora de salida");
+        }
+        TurnoTrabajo turnoTrabajo = turnoRepo.findById(editarTurnoDTO.idTurno()).orElseThrow(() -> new Exception("El turno no existe"));
+        turnoTrabajo.setHoraEntrada(editarTurnoDTO.horaEntrada());
+        turnoTrabajo.setHoraSalida(editarTurnoDTO.horaSalida());
+        turnoTrabajo.setSede(editarTurnoDTO.sede());
+        turnoRepo.save(turnoTrabajo);
+        return "Turno editado exitosamente";
     }
 
     @Override
-    public List<ItemTurnoTrabajoDTO> listarTurnos() throws Exception {
-        return List.of();
+    @Transactional(readOnly = true)
+    public ItemTurnoTrabajoDTO obtenerTurno(ObtenerTurnoDTO obtenerTurnoDTO) throws Exception {
+        if (!turnoRepo.existsById(obtenerTurnoDTO.idTurno())) {
+            throw new Exception("El turno no existe");
+        }
+        TurnoTrabajo turnoTrabajo = turnoRepo.findById(obtenerTurnoDTO.idTurno()).orElseThrow(() -> new Exception("El turno no existe"));
+        return new ItemTurnoTrabajoDTO(
+                turnoTrabajo.getEmpleadoId(),
+                turnoTrabajo.getId(),
+                usuarioRepo.findById(turnoTrabajo.getEmpleadoId()).orElseThrow(() -> new Exception("El empleado no existe")).getNombre(),
+                turnoTrabajo.getFechaTurno(),
+                turnoTrabajo.getHoraEntrada(),
+                turnoTrabajo.getHoraSalida(),
+                turnoTrabajo.getSede()
+        );
     }
 
+    @Override
+    public List<ItemTurnoTrabajoDTO> listarTurnos() {
+        return turnoRepo.findAll().stream()
+                .filter(turnoTrabajo -> turnoTrabajo.getEstado().equals(EstadoTurno.ACTIVO))
+                .map(turnoTrabajo -> {
+                    try {
+                        return new ItemTurnoTrabajoDTO(
+                                turnoTrabajo.getEmpleadoId(),
+                                turnoTrabajo.getId(),
+                                usuarioRepo.findById(turnoTrabajo.getEmpleadoId()).orElseThrow(() -> new Exception("El empleado no existe")).getNombre(),
+                                turnoTrabajo.getFechaTurno(),
+                                turnoTrabajo.getHoraEntrada(),
+                                turnoTrabajo.getHoraSalida(),
+                                turnoTrabajo.getSede());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
+    }
+
+    //Metodo empleado
     @Override
     public List<ItemTurnoTrabajoDTO> listarTurnosPorEmpleado(String idUsuario) throws Exception {
-        return List.of();
+        if (!usuarioRepo.existsById(idUsuario)) {
+            throw new Exception("El empleado no existe");
+        }
+        return turnoRepo.findAll().stream()
+                .filter(turnoTrabajo -> turnoTrabajo.getEmpleadoId().equals(idUsuario) && turnoTrabajo.getEstado().equals(EstadoTurno.ACTIVO))
+                .map(turnoTrabajo -> {
+                    try {
+                        return new ItemTurnoTrabajoDTO(
+                                turnoTrabajo.getEmpleadoId(),
+                                turnoTrabajo.getId(),
+                                usuarioRepo.findById(turnoTrabajo.getEmpleadoId()).orElseThrow(() -> new Exception("El empleado no existe")).getNombre(),
+                                turnoTrabajo.getFechaTurno(),
+                                turnoTrabajo.getHoraEntrada(),
+                                turnoTrabajo.getHoraSalida(),
+                                turnoTrabajo.getSede());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
     }
 }
 
