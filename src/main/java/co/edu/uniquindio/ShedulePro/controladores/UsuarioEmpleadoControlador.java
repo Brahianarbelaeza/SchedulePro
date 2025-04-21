@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioEmpleadoControlador {
 
-    TurnoTrabajoServicio turnoTrabajoServicio;
+    private final TurnoTrabajoServicio turnoTrabajoServicio;
 
     @GetMapping("/listar-turnos-empleado/{id}")
     public ResponseEntity<List<ItemTurnoTrabajoDTO>> listarTurnosEmpleado(@PathVariable String id) throws Exception {
