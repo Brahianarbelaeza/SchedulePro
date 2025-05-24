@@ -30,14 +30,15 @@ public class UsuarioServicioTest {
     @Test
     void crearUsuarioTest() {
         CrearUsuarioDTO crearUsuarioDTO = new CrearUsuarioDTO(
-                "1006688988",
-                "jhojan",
-                "Gil",
-                "3145326847",
-                "jhogillds@gmail.com",
-                Departamento.CAJA,
+                "1006535766",
+                "Brahian Andres",
+                "Arbelae Aguirre",
+                "3147408976",
+                "barbelaezaguirre@gmail.com",
+                Departamento.RECURSOS_HUMANOS,
                 Cargo.EMPLEADO,
-                LocalDateTime.of(2022, 1, 1, 10, 0)
+                LocalDateTime.of(2025, 1, 1, 10, 0),
+                7000
         );
 
         assertDoesNotThrow(() -> {
@@ -49,15 +50,16 @@ public class UsuarioServicioTest {
     @Test
     void editarUsuarioTest() {
         EditarUsuarioDTO editarUsuarioDTO = new EditarUsuarioDTO(
-                "605c77c8e0e1f8b3a8b7f123",
-                "1234567890",
-                "Juan",
-                "Pérez Modificado",
-                "3121234567",
-                "juan.modificado@example.com",
+                "68324fe4b115e03a67d67ece",
+                "1006535766",
+                "Brahian Andres",
+                "Arbelae Aguirre",
+                "3147408976",
+                "barbelaezaguirre@gmail.com",
                 Departamento.ADMINISTRACION_Y_FINANZAS,
                 Cargo.EMPLEADO,
-                LocalDateTime.of(2022, 2, 1, 10, 0)
+                LocalDateTime.of(2025, 1, 1, 10, 0),
+                8000
         );
 
         assertDoesNotThrow(() -> {
@@ -68,7 +70,7 @@ public class UsuarioServicioTest {
 
     @Test
     void eliminarUsuarioTest() {
-        String id = "67d110eeed1bf7649f1d93e6";
+        String id = "68324fe4b115e03a67d67ece";
 
         assertDoesNotThrow(() -> {
             String respuesta = usuarioServicio.eliminarUsuario(id);
@@ -78,7 +80,7 @@ public class UsuarioServicioTest {
 
     @Test
     void obtenerUsuarioTest() {
-        String id = "67cdf85709ed0637fa78bc4e";
+        String id = "68324fe4b115e03a67d67ece";
 
         assertDoesNotThrow(() -> {
             InformacionUsuarioDTO usuario = usuarioServicio.obtenerUsuario(id);

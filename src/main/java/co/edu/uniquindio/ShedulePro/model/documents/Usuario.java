@@ -29,10 +29,11 @@ public class Usuario {
     private Departamento departamento;
     private Cargo cargo;
     private Estado estado;
+    private int precioHora;
 
     //CONSTRUCTOR BUILDER
     @Builder
-    public Usuario (String cedula,String nombre,String apellido,String telefono,String email ,Departamento departamento, Cargo cargo,LocalDateTime fechaContratacion ) {
+    public Usuario (String cedula,String nombre,String apellido,String telefono,String email ,Departamento departamento, Cargo cargo,LocalDateTime fechaContratacion, int precioHora ) {
 
         this.nombre = nombre;
         this.apellido = apellido;
@@ -42,7 +43,7 @@ public class Usuario {
         this.fechaContratacion = fechaContratacion;
         this.departamento = departamento;
         this.cargo = cargo;
-
+        this.precioHora= precioHora;
     }
 
 }
