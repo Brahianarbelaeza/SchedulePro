@@ -154,7 +154,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                         usuario.getTelefono(),
                         usuario.getEmail(),
                         usuario.getDepartamento(),
-                        usuario.getCargo()))
+                        usuario.getCargo(),
+                        usuario.getPrecioHora()))
                 .collect(Collectors.toList());
     }
 

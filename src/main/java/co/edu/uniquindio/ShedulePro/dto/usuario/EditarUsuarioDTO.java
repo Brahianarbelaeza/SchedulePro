@@ -2,10 +2,7 @@ package co.edu.uniquindio.ShedulePro.dto.usuario;
 
 import co.edu.uniquindio.ShedulePro.model.enums.Cargo;
 import co.edu.uniquindio.ShedulePro.model.enums.Departamento;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
@@ -21,6 +18,6 @@ public record EditarUsuarioDTO(
         @NotNull Departamento departamento,
         @NotNull Cargo cargo,
         @NotNull @Past LocalDateTime fechaContratacion,
-        @NotNull int precioHora
+        @NotNull @Positive int precioHora
 ){
 }

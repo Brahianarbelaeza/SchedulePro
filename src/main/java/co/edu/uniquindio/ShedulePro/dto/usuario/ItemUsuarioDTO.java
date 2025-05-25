@@ -14,7 +14,8 @@ public record ItemUsuarioDTO(
         @NotBlank @Length (max = 10)String telefono,
         @NotBlank@Email String email,
         @NotNull Departamento departamento,
-        @NotNull Cargo cargo
+        @NotNull Cargo cargo,
+        @NotNull int precioHora
 
         ) {
 }
