@@ -16,7 +16,7 @@ public record CrearUsuarioDTO (
         @NotBlank @Email String email,
         @NotNull Departamento departamento,
         @NotNull Cargo cargo,
-        @NotNull @Past LocalDateTime fechaContratacion
+        @NotNull @Past LocalDateTime fechaContratacion,
+        @NotNull @Positive int precioHora
         ){
-
 }

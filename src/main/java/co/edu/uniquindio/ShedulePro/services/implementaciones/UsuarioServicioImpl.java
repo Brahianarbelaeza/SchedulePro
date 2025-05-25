@@ -50,7 +50,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 dto.email(),
                 dto.departamento(),
                 dto.cargo(),
-                dto.fechaContratacion()
+                dto.fechaContratacion(),
+                dto.precioHora()
         );
         usuario.setEstado(Estado.ACTIVO);
         String contrasena = obtenerContrasena();
@@ -71,7 +72,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                         "<p style='margin: 5px 0;'><strong>Contraseña:</strong> <span style='color: #28a745;'>" + contrasena + "</span></p>" +
                         "</div>" +
                         "<p style='text-align: center; margin-top: 20px;'>" +
-                        "<a href='https://schedulepro.com/login' style='display: inline-block; padding: 10px 20px; " +
+                        "<a href='https://schedule-pro-36f5a.web.app/' style='display: inline-block; padding: 10px 20px; " +
                         "color: white; background: #007bff; text-decoration: none; border-radius: 5px;'>Iniciar Sesión</a>" +
                         "</p>" +
                         "<p style='color: #777; font-size: 14px; text-align: center; margin-top: 20px;'>" +
@@ -108,6 +109,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         usuario.setDepartamento(dto.departamento());
         usuario.setCargo(dto.cargo());
         usuario.setFechaContratacion(dto.fechaContratacion());
+        usuario.setPrecioHora(dto.precioHora());
 
         usuarioRepo.save(usuario);
         return usuario.getId();
@@ -136,7 +138,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 usuario.getEmail(),
                 usuario.getDepartamento(),
                 usuario.getCargo(),
-                usuario.getFechaContratacion()
+                usuario.getFechaContratacion(),
+                usuario.getPrecioHora()
         );
     }
 
@@ -151,7 +154,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                         usuario.getTelefono(),
                         usuario.getEmail(),
                         usuario.getDepartamento(),
-                        usuario.getCargo()))
+                        usuario.getCargo(),
+                        usuario.getPrecioHora()))
                 .collect(Collectors.toList());
     }
 
