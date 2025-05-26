@@ -1,0 +1,35 @@
+name: Merge to Render Branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compilar sin test
+        run: ./gradlew build -x test
+
+      - name: Configurar Git
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Hacer merge a la rama render
+        run: |
+          git fetch origin render
+          git checkout render
+          git merge origin/master --no-edit
+          git push origin render

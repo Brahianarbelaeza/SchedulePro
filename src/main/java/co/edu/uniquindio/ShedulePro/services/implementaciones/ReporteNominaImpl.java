@@ -10,6 +10,7 @@ import co.edu.uniquindio.ShedulePro.repositories.TurnoRepo;
 import co.edu.uniquindio.ShedulePro.repositories.UsuarioRepo;
 import co.edu.uniquindio.ShedulePro.services.interfaces.ReporteNominaServicio;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class ReporteNominaImpl implements ReporteNominaServicio {
 
 
     @Override
+    @Scheduled(cron = "0 0 0 * * MON")
     public String generarReporteNominaGeneral() {
         List<Usuario> usuarios = usuarioRepo.findAllByEstado(Estado.ACTIVO); // Empleados activos
         List<TurnoTrabajo> turnos = turnoRepo.findAllByEstado(EstadoTurno.INACTIVO); // Turnos que ya pasaron
