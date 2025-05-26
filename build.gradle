@@ -20,9 +20,7 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-test {
-    useJUnitPlatform()
-}
+
 repositories {
     mavenCentral()
 
