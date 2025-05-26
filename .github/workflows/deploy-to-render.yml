@@ -26,9 +26,7 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
-          
-          - name: Hacer merge a la rama render
-          - name: Hacer merge a la rama render
+
       - name: Hacer merge a la rama render
         run: |
           git fetch origin render
