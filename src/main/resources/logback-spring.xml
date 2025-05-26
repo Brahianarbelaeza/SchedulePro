@@ -1,0 +1,18 @@
+<configuration>
+    <appender name="LOKI" class="com.github.loki4j.logback.LokiAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <http>
+            <url>https://schedulepro-loki.onrender.com/loki/api/v1/push</url>
+            <connectionTimeoutMs>5000</connectionTimeoutMs>
+            <readTimeoutMs>10000</readTimeoutMs>
+        </http>
+        <labels>
+            <label name="app" value="schedulepro" />
+            <label name="level" pattern="%level" />
+        </labels>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOKI"/>
+    </root>
+</configuration>
