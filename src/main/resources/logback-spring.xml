@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
     <appender name="LOKI" class="com.github.loki4j.logback.LokiAppender">
-        <http>
-            <url>https://TU-URL-LOKI/loki/api/v1/push</url>
-        </http>
+        <url>https:https://schedulepro-loki.onrender.com/loki/api/v1/push</url>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
         <labels>
             <label name="app" value="schedulepro" />
@@ -13,4 +13,5 @@
     <root level="INFO">
         <appender-ref ref="LOKI" />
     </root>
+
 </configuration>
