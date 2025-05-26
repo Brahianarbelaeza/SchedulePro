@@ -31,5 +31,5 @@ jobs:
         run: |
           git fetch origin render
           git checkout render
-          git merge origin/master --no-edit
+          git merge origin/master --no-edit --allow-unrelated-histories
           git push origin render
