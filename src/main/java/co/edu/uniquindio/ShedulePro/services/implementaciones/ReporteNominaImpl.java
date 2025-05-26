@@ -63,6 +63,7 @@ public class ReporteNominaImpl implements ReporteNominaServicio {
             reportes.add(reporte);
         }
         reporteNominaRepo.saveAll(reportes);
+        // Generar el PDF con los reportes
         byte[] pdfBytes = pdfServicio.generarReporteGeneral(reportes);
         try {
             emailServicio.enviarCorreoConAdjunto(
